@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>TOP 100</title>
+</head>
+<p>
+    {% if data %}
+        {% for title in data %}
+            </p><a href="{% url 'catalog:detail' title.id %}">{{ title.name_ru }} - {{ title.rating }}</a></p>
+        {% endfor %}
+    {% else %}
+    <p>No titles are available.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a href="{% url 'catalog:add' %}">Добавить</a>
+    <a href="{% url 'catalog:random_title' %}">Рандом</a>
+    <a href="{% url 'catalog:genre_search' %}">Поиск по жанрам</a>
+    {% if latest_anime_title_list %}
+    <ul>
+    {% for name in latest_anime_title_list %}
+<!--        <li><a href="/catalog/{{ name.id }}/">{{ name.name_ru }}</a></li>-->
+<!--        <li><a href="{% url 'catalog:detail' name.id %}">{{ name.name_ru }}</a></li>-->
+        <li><a href="{{ name.get_absolute_url }}">{{ name.name_ru }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+</body>
+</html>

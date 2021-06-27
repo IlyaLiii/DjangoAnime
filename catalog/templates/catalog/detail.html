@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css"
+    href="{% static 'catalog/style.css' %}">
+</head>
+<body>
+{% if data %}
+    <h2>{{ data.name_ru }} / {{ data.name_eng }} <i>{{ data.rating }}</i></h2>
+    <p>Дата релиза: {{ data.release_date }}</p>
+    <p>Статус: <b>{{ data.status }}</b></p>
+    <p>Жанры:
+     {% if data.genre.all %}
+        {% for genre in data.genre.all %}
+        {{ genre }}
+        {% endfor %}
+     {% else %}
+        жанры не выставлены(
+     {% endif %}
+    </p>
+    <p>Кол-во эпизодов: {{ data.num_of_episodes }}</p>
+    <p>Дата добавления на сайт: {{ data.pub_date }}</p>
+{% else %}
+    <p>Title does not exists</p>
+{% endif %}
+{{ current_title }}
+</body>
+</html>

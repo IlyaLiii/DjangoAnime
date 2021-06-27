@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create FORM</title>
+</head>
+<body>
+    <h1>Предложи аниме для добавления!</h1>
+<!--    <div>-->
+<!--        {% for title in Anime_title %}-->
+<!--        <a href="{% url 'catalog:detail' title.id %}">{{ title.name_ru }}</a>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Предложить">
+    </form>
+</body>
+</html>

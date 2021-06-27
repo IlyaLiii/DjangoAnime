@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Все жанры, которые я спарсил нахуй)</h1>
+    {% if genres %}
+        {% for genre in genres %}
+            <a href="{{ genre.get_absolute_url }}">{{ genre }}</a><br>
+
+        {% endfor %}
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if data %}
+        {% for title in data %}
+            <p><a href="{{ title.get_absolute_url }}">{{ title.name_ru }}/{{ title.name_eng }}</a></p>
+        {% endfor %}
+    {% else %}
+    <p>no titles available</p>
+    {% endif %}
+</body>
+</html>
