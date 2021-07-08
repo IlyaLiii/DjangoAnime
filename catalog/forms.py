@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm, Select, forms, DecimalField, ModelChoiceField, CharField
+from django.forms import ModelForm, Select, forms, DecimalField, ModelChoiceField, CharField, NumberInput, IntegerField, \
+    SlugField, ModelMultipleChoiceField
 from .models import Anime_title, Genres
 
 
@@ -14,11 +15,11 @@ class Anime_title_form_for_user(ModelForm):
 
 class AddAnime_title(ModelForm):
     name_ru = CharField(label='Имя на русском', max_length=250)
-    rating = DecimalField(label='Рейтинг', decimal_places=2)
-    genres = ModelChoiceField(queryset=Genres.objects.all(),
-                              label='Жанры',
-                              help_text='Укажите жанры',
-                              required=False)
+    rating = IntegerField(label='Рейтинг', min_value=1, max_value=10)
+    genres = ModelMultipleChoiceField(queryset=Genres.objects.all(),
+                                      label='Жанры',
+                                      help_text='Укажите жанры',
+                                      required=False)
 
     class Meta:
         model = Anime_title

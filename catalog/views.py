@@ -8,7 +8,7 @@ from .models import Anime_title, Genres
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user
+from .forms import Anime_title_form_for_user , AddAnime_title
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
 from random import randint
@@ -75,17 +75,6 @@ def top(request, ):
     return render(request, 'catalog/top.html', {'data': data})
 
 
-class Anime_t_create_view(CreateView):
-    template_name = 'catalog/create.html'
-    form_class = Anime_title_form_for_user
-    success_url = reverse_lazy('catalog:index')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['Anime_title'] = Anime_title.objects.all()
-        return context
-
-
 def index2(request):
     response = HttpResponse('Здвесь будет',
                             content_type='text/plain; charset=utf-8')
@@ -112,18 +101,27 @@ def random_title(request):
     context = Anime_title.objects.get(pk=title)
     return redirect('/catalog/' + str(title), {'data': context})
 
+# class Anime_t_create_view(CreateView):
+#     template_name = 'catalog/create.html'
+#     form_class = Anime_title_form_for_user
+#     success_url = reverse_lazy('catalog:index')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['Anime_title'] = Anime_title.objects.all()
+#         return context
+
 # TODO: Аналог нормальной формы, нужно потесить
-# def Anime_t_create(request):
-#     if request.method == 'POST':
-#         anime_form = Anime_title_form_for_user(request.POST)
-#         if anime_form.is_valid():
-#             anime_form.save()
-#             return HttpResponseRedirect(reverse('catalog:index',kwargs={
-#                 'anime_id': anime_form.cleaned_data['anime_id'].pk}))
-#         else:
-#             context = {'form': anime_form}
-#             return render(request, 'catalog/create.html', context)
-#     else:
-#         anime_form = Anime_title_form_for_user()
-#         context = {'form': anime_form}
-#         return render(request, 'catalog/create.html', context)
+def Anime_t_create(request):
+    if request.method == 'POST':
+        anime_form = AddAnime_title(request.POST)
+        if anime_form.is_valid():
+            anime_form.save()
+            return HttpResponseRedirect(reverse('catalog:index'))
+        else:
+            context = {'form': anime_form}
+            return render(request, 'catalog/create.html', context)
+    else:
+        anime_form = AddAnime_title()
+        context = {'form': anime_form}
+        return render(request, 'catalog/create.html', context)
