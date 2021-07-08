@@ -15,8 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 
 urlpatterns = [
     path('catalog/', include('catalog.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout'),
+    path('accounts/password_change/', PasswordChangeView.as_view(
+        template_name='registration/change_pass.html',
+        success_url='catalog:index',
+        extra_context={'context': 'экстра_контекст'}
+    ), name='password_change'),
 ]
