@@ -5,9 +5,15 @@
     <title>Title</title>
 </head>
 <body>
-    <a href="{% url 'catalog:add' %}">Добавить</a>
-    <a href="{% url 'catalog:random_title' %}">Рандом</a>
-    <a href="{% url 'catalog:genre_search' %}">Поиск по жанрам</a>
+    {% if user.is_authenticated %}
+      Hi {{ user.username }}! <a href="{% url 'logout' %}">Log Out</a> <a href="{% url 'password_change' %}">password_change</a>
+    {% else %}
+      <p>You are not logged in <a href="{% url 'login' %}">Log In</a></p>
+    {% endif %}
+    <p>--------------------------</p>
+    <p><a href="{% url 'catalog:add' %}">Добавить</a></p>
+    <p><a href="{% url 'catalog:random_title' %}">Рандом</a></p>
+    <p><a href="{% url 'catalog:genre_search' %}">Поиск по жанрам</a></p>
     {% if latest_anime_title_list %}
     <ul>
     {% for name in latest_anime_title_list %}

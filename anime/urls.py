@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 
 urlpatterns = [
     path('catalog/', include('catalog.urls')),
@@ -24,7 +24,9 @@ urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('accounts/password_change/', PasswordChangeView.as_view(
         template_name='registration/change_pass.html',
-        success_url='catalog:index',
-        extra_context={'context': 'экстра_контекст'}
+        extra_context={'context': 'zxcqwe123'}
     ), name='password_change'),
+    path('accounts/password_change/done/', PasswordChangeDoneView.as_view(
+        template_name='registration/password_changed.html'
+    ), name='password_change_done'),
 ]
