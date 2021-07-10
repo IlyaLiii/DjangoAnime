@@ -3,6 +3,8 @@
 *.pot
 *.pyc
 __pycache__
+./anime/__pycache__
+./catalog/__pycache__
 db.sqlite3
 media
 
