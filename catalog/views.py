@@ -8,9 +8,11 @@ from .models import Anime_title, Genres
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user , AddAnime_title
+from .forms import Anime_title_form_for_user, AddAnime_title
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from random import randint
 
 
@@ -46,8 +48,8 @@ class Genre_search(ListView):
 # Переопределение функции в класс, чтобы было круче
 @require_http_methods(['GET'])
 def detail(request, anime_id):
-    data = get_object_or_404(Anime_title, pk=anime_id)
     # print(request.GET)
+    data = get_object_or_404(Anime_title, pk=anime_id)
     return render(request, 'catalog/detail.html', {'data': data})
 
 
@@ -70,6 +72,8 @@ def genre_titles(request, genre_id):
     data = Anime_title.objects.filter(genre=genre_id)
     return render(request, 'catalog/genre_titles.html', {'data': data})
 
+
+@login_required
 def top(request, ):
     data = Anime_title.objects.order_by('-rating')[:100]
     return render(request, 'catalog/top.html', {'data': data})
@@ -100,6 +104,7 @@ def random_title(request):
     title = randint(0, len(data))
     context = Anime_title.objects.get(pk=title)
     return redirect('/catalog/' + str(title), {'data': context})
+
 
 # class Anime_t_create_view(CreateView):
 #     template_name = 'catalog/create.html'

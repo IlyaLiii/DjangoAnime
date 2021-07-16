@@ -8,6 +8,11 @@
     href="{% static 'catalog/style.css' %}">
 </head>
 <body>
+{% if user.is_authenticated %}
+<p>Вы уже выполнили вход, <b style="color: red">{{user.username}}</b></p>
+{% else %}
+<p>Выполните вход, так будет больше контента для вас :)</p>
+{% endif %}
 {% if data %}
     <h2>{{ data.name_ru }} / {{ data.name_eng }} <i>{{ data.rating }}</i></h2>
     <p>Дата релиза: {{ data.release_date }}</p>
