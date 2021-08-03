@@ -21,6 +21,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
 urlpatterns = [
     path('catalog/', include('catalog.urls')),
     path('admin/', admin.site.urls),
+    path('captcha/', include('captcha.urls')),
     # path 'accounts/.....
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
@@ -48,3 +49,4 @@ urlpatterns = [
         template_name='registration/password_confirmed.html'
     ), name='password_reset_complete'),
 ]
+

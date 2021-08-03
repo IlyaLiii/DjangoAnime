@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if data %}
+        <h2>Все, что удалось найти:</h2>
+        {% for anime in data %}
+            <p><a href="{{ anime.get_absolute_url }}">{{ anime.name_ru }}</a></p><br>
+        {% endfor %}
+    {% else %}
+        <p>Ничего не удалось найти</p>
+    {% endif %}
+</body>
+</html>

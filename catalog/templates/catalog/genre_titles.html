@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,10 +7,10 @@
 <body>
     {% if data %}
         {% for title in data %}
-            <p><a href="{{ title.get_absolute_url }}">{{ title.name_ru }}/{{ title.name_eng }}</a></p>
+            <p><a href="{{ title.get_absolute_url }}">{{ title.name_ru }} / {{ title.name_eng }}</a></p>
         {% endfor %}
     {% else %}
-    <p>no titles available</p>
+    <h2>No titles available</h2>
     {% endif %}
 </body>
 </html>

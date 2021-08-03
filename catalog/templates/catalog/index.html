@@ -14,6 +14,7 @@
     <p><a href="{% url 'catalog:add' %}">Добавить</a></p>
     <p><a href="{% url 'catalog:random_title' %}">Рандом</a></p>
     <p><a href="{% url 'catalog:genre_search' %}">Поиск по жанрам</a></p>
+    <p><a href="{% url 'catalog:title_search' %}">Поиск по названию</a></p>
     {% if latest_anime_title_list %}
     <ul>
     {% for name in latest_anime_title_list %}

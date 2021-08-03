@@ -8,7 +8,7 @@ from .models import Anime_title, Genres
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user, AddAnime_title
+from .forms import Anime_title_form_for_user, AddAnime_title, SearchForm
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
@@ -106,15 +106,15 @@ def random_title(request):
     return redirect('/catalog/' + str(title), {'data': context})
 
 
-# class Anime_t_create_view(CreateView):
-#     template_name = 'catalog/create.html'
-#     form_class = Anime_title_form_for_user
-#     success_url = reverse_lazy('catalog:index')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['Anime_title'] = Anime_title.objects.all()
-#         return context
+class Anime_t_create_view(CreateView):
+    template_name = 'catalog/create.html'
+    form_class = Anime_title_form_for_user
+    success_url = reverse_lazy('catalog:index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['Anime_title'] = Anime_title.objects.all()
+        return context
 
 # TODO: Аналог нормальной формы, нужно потесить
 def Anime_t_create(request):
@@ -130,3 +130,18 @@ def Anime_t_create(request):
         anime_form = AddAnime_title()
         context = {'form': anime_form}
         return render(request, 'catalog/create.html', context)
+
+def title_seach(request):
+    if request.method == 'POST':
+        sf = SearchForm(request.POST)
+        if sf.is_valid():
+            keyword = sf.cleaned_data['keyword'].capitalize()
+            # genre_id = sf.cleaned_data['genre'].pk
+            anime_titles = Anime_title.objects.filter(name_ru__icontains=keyword,)
+                                                     #genre=genre_id)
+            data = {'data': anime_titles}
+            return render(request, 'catalog/search_results.html', data)
+    else:
+        sf = SearchForm()
+        context = {'form': sf}
+        return render(request, 'catalog/search.html', context)

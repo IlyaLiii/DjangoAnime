@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from django.db.models import ManyToManyField
@@ -60,7 +61,6 @@ class Anime_title(models.Model):
                          name='%(class)s_second'),
         ]
 
-
     def __str__(self):
         return self.name_ru
 
@@ -70,9 +70,4 @@ class Anime_title(models.Model):
     def name_and_rating(self):
         if self.name_ru and self.rating:
             return '%s %s' % (self.name_ru, self.rating)
-
-
-
-
-
 
