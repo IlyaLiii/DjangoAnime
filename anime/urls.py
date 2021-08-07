@@ -19,6 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 urlpatterns = [
+    # path('profile/', include('restapp.urls')),
     path('catalog/', include('catalog.urls')),
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),

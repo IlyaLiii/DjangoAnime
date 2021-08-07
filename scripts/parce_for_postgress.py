@@ -1,9 +1,9 @@
+import psycopg2
 from bs4 import BeautifulSoup
 import requests as req
 import time
 import datetime
-import sqlite3
-
+from contextlib import closing
 
 url = 'https://shikimori.one/collections/3981-200-samyh-populyarnyh-anime-na-shikimori'
 headers = {
@@ -43,7 +43,7 @@ class Parce:
 
             name_of_title = soup.find('h1').get_text().replace('/', '').split('  ')
             name_ru = name_of_title[0]
-            print(name_ru)
+            # print(name_ru)
             name_eng = name_of_title[1]
             try:
                 rating = soup.find('div', class_='score-value score-9').get_text()
@@ -56,13 +56,10 @@ class Parce:
                     except(AttributeError):
                         rating = soup.find('div', class_='score-value score-6').get_text()
             genres = soup.find_all('span', class_='genre-ru')
-            str_genres = ''
+            genres_list = []
             for genre in genres:
-                str_genres += genre.get_text() + ','
-            # Удаляю последнюю запятую, чтобы были чистые данные
-            str_genres = list(str_genres)
-            del (str_genres[-1])
-            str_genres = ''.join(str_genres)
+                genres_list.append(genre.get_text())
+            # print(genres_list)
             try:
                 status = soup.find('span', class_='b-anime_status_tag released').get('data-text').capitalize()
             except(AttributeError):
@@ -81,14 +78,15 @@ class Parce:
                 'name_ru': name_ru,
                 'name_eng': name_eng,
                 'rating': rating,
-                'genre': str_genres,
+                'genre': genres_list,
                 'status': status,
                 'release_date': release_date,
                 "num_of_episodes": num_of_episodes,
                 "pub_date": pub_date,
             }
             data.update({str(i): data_of_title})
-            print(data_of_title)
+            # print(data_of_title)
+            print(data)
             i += 1
             time.sleep(2)
         return data
@@ -110,29 +108,26 @@ data = Parce.parce()
 print(data)
 
 
-class DB:
-    def __init__(self, database):
-        """Подключаемся к БД и сохраняем курсор соединения"""
-        self.connection = sqlite3.connect(database)
-        self.cursor = self.connection.cursor()
-
-    def add_titles_in_script(self, data):
-        with self.connection:
-
-            for value in data:
-                name_ru = data[value]['name_ru']
-                genre = data[value]['genre']
-                release_date = data[value]['release_date']
-                num_of_episodes = data[value]['num_of_episodes']
-                pub_date = data[value]['pub_date']
-                name_eng = data[value]['name_eng']
-                rating = data[value]['rating']
-                status = data[value]['status']
-                self.cursor.execute("""INSERT INTO `catalog_anime_title`
-                (`name_ru`, `genre`, `release_date`, `num_of_episodes`, `pub_date`, `name_eng`, `rating`, `status`)
-                VALUES(?,?,?,?,?,?,?,?)""",
-                                    (name_ru, genre, release_date, num_of_episodes, pub_date, name_eng, rating, status))
+def add_titles_in_script(data):
+    conn = psycopg2.connect(host="localhost", database="postgres", user="Mori_dev", password="zxcqwe123")
+    cursor = conn.cursor()
+    for value in data:
+        name_ru = data[value]['name_ru']
+        genre = data[value]['genre']
+        release_date = data[value]['release_date']
+        num_of_episodes = data[value]['num_of_episodes']
+        pub_date = data[value]['pub_date']
+        name_eng = data[value]['name_eng']
+        rating = data[value]['rating']
+        status = data[value]['status']
+        extent = '5'
+        cursor.execute("""INSERT INTO catalog_anime_title
+            (name_ru,genre, release_date, num_of_episodes, pub_date, name_eng, rating, status, extent)
+            VALUES (%s, %s, %s, %s, %s, %s,%s, %s, %s)""",
+                       (name_ru, genre, release_date, num_of_episodes, pub_date, name_eng, rating, status, extent))
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 
-a = DB('../db.sqlite3')
-# print(a.add_titles_in_script(data))
+add_titles_in_script(data)

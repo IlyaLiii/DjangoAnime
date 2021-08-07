@@ -4,11 +4,11 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.views.generic.list import ListView
 # from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectMixin
-from .models import Anime_title, Genres
+from .models import Anime_title#, Genres
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user, AddAnime_title, SearchForm
+from .forms import Anime_title_form_for_user, SearchForm #AddAnime_title,
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User

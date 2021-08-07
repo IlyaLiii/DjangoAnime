@@ -1,24 +1,15 @@
-from django.contrib.auth.models import User
 from django.db import models
-
-from django.db.models import ManyToManyField
-
-
-class Genres(models.Model):
-    genre = models.CharField(max_length=50)
-
-    class Meta:
-        verbose_name_plural = 'Жанры'
-        verbose_name = 'Жанр'
-
-    def __str__(self):
-        return self.genre
-
-    def get_absolute_url(self):
-        return '/catalog/genre_search/%s/' % self.pk
+from django.contrib.postgres.fields import ArrayField, CICharField
 
 
-# Create your models here.
+class PGSRubric(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.TextField()
+    tags = ArrayField(base_field=models.CharField(
+        max_length=20
+    ))
+
+
 class Anime_title(models.Model):
     Status_of_title = (
         ('Announcement', 'Анонсировано'),
@@ -36,18 +27,17 @@ class Anime_title(models.Model):
         good = 7, 'Хорошо'
         excellent = 8, 'Отлично'
         toppingly = 9, 'Великолепно'
-        naruto = 10, 'Иди нахуй с такими оценками'
+        naruto = 10, 'АААА ДАА'
 
-    name_ru = models.CharField(max_length=250, verbose_name='Имя на русском')
-    name_eng = models.CharField(max_length=250, verbose_name='Имя на английском')
-    rating = models.CharField(max_length=50, null=True, verbose_name='Рейтинг')
-    # genre = models.CharField(max_length=250, null=True, verbose_name='Жанры')
-    status = models.CharField(max_length=50, choices=Status_of_title, verbose_name='Статус')
-    release_date = models.CharField(max_length=50, null=True, verbose_name='Дата выхода')
-    num_of_episodes = models.CharField(max_length=50, null=True, verbose_name='Кол-во эпизодов')
+    name_ru = CICharField(max_length=250, verbose_name='Имя на русском')
+    name_eng = CICharField(max_length=250, verbose_name='Имя на английском')
+    rating = CICharField(max_length=50, null=True, verbose_name='Рейтинг')
+    genre = ArrayField(base_field=models.CharField(max_length=250, null=True), verbose_name='Жанры')
+    status = CICharField(max_length=50, choices=Status_of_title, verbose_name='Статус')
+    release_date = CICharField(max_length=50, null=True, verbose_name='Дата выхода')
+    num_of_episodes = CICharField(max_length=50, null=True, verbose_name='Кол-во эпизодов')
     pub_date = models.DateTimeField('date published', null=True)
     extent = models.SmallIntegerField(choices=Quality_grade.choices, default=Quality_grade.plus_minus)
-    genre = ManyToManyField(Genres)
 
     class Meta:
         verbose_name_plural = 'Тайтлы'
@@ -71,3 +61,7 @@ class Anime_title(models.Model):
         if self.name_ru and self.rating:
             return '%s %s' % (self.name_ru, self.rating)
 
+
+
+    # def get_absolute_url(self):
+    #     return '/catalog/genre_search/%s/' % self.pk
