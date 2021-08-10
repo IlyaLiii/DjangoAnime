@@ -9,6 +9,7 @@
     {% if user.is_authenticated %}
     <p>Вы уже выполнили вход</p>
     {% else %}
+    <a href="{% url 'social:begin' 'vk-oauth2' %}">Войти через ВКонтакте</a>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

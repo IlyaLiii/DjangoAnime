@@ -51,6 +51,7 @@ urlpatterns = [
     path('accounts/reset/done/', PasswordResetCompleteView.as_view(
         template_name='registration/password_confirmed.html'
     ), name='password_reset_complete'),
+    path('social/', include('social_django.urls', namespace=' ')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, CICharField
 from django.db.models import ManyToManyField
@@ -101,3 +102,8 @@ class Img(models.Model):
     def delete(self, *args, **kwargs):
         self.img.delete(save=False)
         super().delete(*args, **kwargs)
+
+
+class Profile(models.Model):
+    phone = CICharField(max_length=20, null=True, verbose_name='Номер телефона')
+    user = models.OneToOneField(User, on_delete=models.CASCADE)

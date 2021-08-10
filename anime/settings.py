@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'precise_bbcode',
     'bootstrap4',
     'django_cleanup',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -138,7 +141,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # LOGIN_URL = 'http://127.0.0.1:8000/accounts/logout/'
 LOGOUT_REDIRECT_URL = 'catalog:index'
+LOGIN_REDIRECT_URL = 'catalog:index'
 PASSWORD_CHANGE_DONE = 'catalog:index'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#Для social-django
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+SOCIAL_AUTH_VK_OAUTH2_KEY = '7923394'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'NpoNWWcSbTl7FGs0L4j5'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
