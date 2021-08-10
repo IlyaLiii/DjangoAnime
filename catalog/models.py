@@ -1,5 +1,16 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, CICharField
+from django.db.models import ManyToManyField
+from datetime import datetime
+from os.path import splitext
+
+
+# def get_timestamp_path(instance, filename):
+#     return '%s%s' % (datetime.now().timestamp(),
+#                      splitext(filename)[1])
+#
+#
+# file = models.FileField(upload_to=get_timestamp_path())
 
 
 class PGSRubric(models.Model):
@@ -8,6 +19,20 @@ class PGSRubric(models.Model):
     tags = ArrayField(base_field=models.CharField(
         max_length=20
     ))
+
+
+class Genres(models.Model):
+    genre = CICharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = 'Жанры'
+        verbose_name = 'Жанр'
+
+    def __str__(self):
+        return self.genre
+
+    def get_absolute_url(self):
+        return '/catalog/genre_search/%s/' % self.pk
 
 
 class Anime_title(models.Model):
@@ -32,12 +57,13 @@ class Anime_title(models.Model):
     name_ru = CICharField(max_length=250, verbose_name='Имя на русском')
     name_eng = CICharField(max_length=250, verbose_name='Имя на английском')
     rating = CICharField(max_length=50, null=True, verbose_name='Рейтинг')
-    genre = ArrayField(base_field=models.CharField(max_length=250, null=True), verbose_name='Жанры')
+    # genre = ArrayField(base_field=models.CharField(max_length=250, null=True), verbose_name='Жанры')
     status = CICharField(max_length=50, choices=Status_of_title, verbose_name='Статус')
     release_date = CICharField(max_length=50, null=True, verbose_name='Дата выхода')
     num_of_episodes = CICharField(max_length=50, null=True, verbose_name='Кол-во эпизодов')
     pub_date = models.DateTimeField('date published', null=True)
     extent = models.SmallIntegerField(choices=Quality_grade.choices, default=Quality_grade.plus_minus)
+    genre = ManyToManyField(Genres)
 
     class Meta:
         verbose_name_plural = 'Тайтлы'
@@ -62,6 +88,16 @@ class Anime_title(models.Model):
             return '%s %s' % (self.name_ru, self.rating)
 
 
+class Img(models.Model):
+    img = models.ImageField(verbose_name='Изображение',
+                            # upload_to=get_timestamp_path())
+                            upload_to='img/%Y/%m/%d/')
+    desc = models.TextField(verbose_name='Описание')
 
-    # def get_absolute_url(self):
-    #     return '/catalog/genre_search/%s/' % self.pk
+    class Meta:
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
+
+    def delete(self, *args, **kwargs):
+        self.img.delete(save=False)
+        super().delete(*args, **kwargs)

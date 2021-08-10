@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'captcha',
     'django.contrib.postgres',
+    'precise_bbcode',
+    'bootstrap4',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # LOGIN_URL = 'http://127.0.0.1:8000/accounts/logout/'
 LOGOUT_REDIRECT_URL = 'catalog:index'
 PASSWORD_CHANGE_DONE = 'catalog:index'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

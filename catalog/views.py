@@ -4,11 +4,11 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.views.generic.list import ListView
 # from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectMixin
-from .models import Anime_title#, Genres
+from .models import Anime_title, Genres, Img
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user, SearchForm #AddAnime_title,
+from .forms import Anime_title_form_for_user, SearchForm, AddAnime_title, ImgForm
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
@@ -37,7 +37,7 @@ class Genre_search(ListView):
     context_object_name = 'genres'
 
     def get_queryset(self):
-        return Genres.objects.all()
+        return Anime_title.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -116,6 +116,7 @@ class Anime_t_create_view(CreateView):
         context['Anime_title'] = Anime_title.objects.all()
         return context
 
+
 # TODO: Аналог нормальной формы, нужно потесить
 def Anime_t_create(request):
     if request.method == 'POST':
@@ -131,17 +132,33 @@ def Anime_t_create(request):
         context = {'form': anime_form}
         return render(request, 'catalog/create.html', context)
 
-def title_seach(request):
+
+def title_search(request):
     if request.method == 'POST':
         sf = SearchForm(request.POST)
         if sf.is_valid():
             keyword = sf.cleaned_data['keyword'].capitalize()
             # genre_id = sf.cleaned_data['genre'].pk
-            anime_titles = Anime_title.objects.filter(name_ru__icontains=keyword,)
-                                                     #genre=genre_id)
+            anime_titles = Anime_title.objects.filter(name_ru__icontains=keyword, )
+            # genre=genre_id)
             data = {'data': anime_titles}
             return render(request, 'catalog/search_results.html', data)
     else:
         sf = SearchForm()
         context = {'form': sf}
         return render(request, 'catalog/search.html', context)
+
+
+def add_img(request):
+    if request.method == 'POST':
+        form = ImgForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('catalog:index')
+        else:
+            context = {'form': form}
+            return render(request, 'catalog/add_img.html', context)
+    else:
+        form = ImgForm()
+        context = {'form': form}
+        return render(request, 'catalog/add_img.html', context)

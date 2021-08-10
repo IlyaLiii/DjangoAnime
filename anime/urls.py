@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import include, path, reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     # path('profile/', include('restapp.urls')),
@@ -50,4 +52,6 @@ urlpatterns = [
         template_name='registration/password_confirmed.html'
     ), name='password_reset_complete'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
