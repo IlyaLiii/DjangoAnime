@@ -4,6 +4,10 @@ from django.shortcuts import render, get_object_or_404, redirect, get_list_or_40
 from django.views.generic.list import ListView
 # from django.views.generic import ListView
 from django.views.generic.detail import SingleObjectMixin
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 from .models import Anime_title, Genres, Img
 from django.urls import reverse
 from django.views import generic
@@ -14,6 +18,8 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from random import randint
+
+from .serializers import GenresSerializer
 
 
 class IndexView(generic.ListView):
@@ -162,3 +168,41 @@ def add_img(request):
         form = ImgForm()
         context = {'form': form}
         return render(request, 'catalog/add_img.html', context)
+
+
+# api_restwramework
+
+@api_view(['GET', 'POST'])
+def api_genres(request):
+    if request.method == 'GET':
+        genres = Genres.objects.all()
+        serializer = GenresSerializer(genres, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = GenresSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def api_genres_detail(request, pk):
+    genre = Genres.objects.get(pk=pk)
+    if request.method == 'GET':
+        serializer = GenresSerializer(genre)
+        return Response(serializer.data)
+    elif request.method == 'PUT' or request.method == 'PATCH':
+        serializer = GenresSerializer(genre, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        genre.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

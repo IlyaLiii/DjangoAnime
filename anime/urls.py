@@ -20,6 +20,8 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
 from django.conf.urls.static import static
 from django.conf import settings
 
+from catalog.views import api_genres, api_genres_detail
+
 urlpatterns = [
     # path('profile/', include('restapp.urls')),
     path('catalog/', include('catalog.urls')),
@@ -52,6 +54,9 @@ urlpatterns = [
         template_name='registration/password_confirmed.html'
     ), name='password_reset_complete'),
     path('social/', include('social_django.urls', namespace=' ')),
+    # api_restframework
+    path('api/genres/<int:pk>/', api_genres_detail),
+    path('api/genres/', api_genres),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
