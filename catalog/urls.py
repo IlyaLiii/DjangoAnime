@@ -1,6 +1,8 @@
 from django.urls import path
-
 from .views import *
+# from anime.settings import DEBUG
+# from django.contrib.staticfiles.views import serve
+# from django.views.decorators.cache import never_cache
 
 app_name = 'catalog'
 urlpatterns = [
@@ -19,3 +21,5 @@ urlpatterns = [
     path('add/', Anime_t_create, name='add'),
     path('add_img/', add_img, name='add_img'),
 ]
+# if DEBUG:
+#     urlpatterns.append(path('static/<path:path>', never_cache(serve)))
