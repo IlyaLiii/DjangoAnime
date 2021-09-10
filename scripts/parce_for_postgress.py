@@ -88,7 +88,7 @@ class Parce:
             # print(data_of_title)
             print(data)
             i += 1
-            time.sleep(2)
+            time.sleep(1.5)
         return data
 
     def parce(self):
@@ -109,11 +109,11 @@ print(data)
 
 
 def add_titles_in_script(data):
-    conn = psycopg2.connect(host="localhost", database="postgres", user="Mori_dev", password="zxcqwe123")
+    conn = psycopg2.connect(host="", database="ken", user="ken", password="zxcqwe123")
     cursor = conn.cursor()
     for value in data:
         name_ru = data[value]['name_ru']
-        genre = data[value]['genre']
+        # genre = data[value]['genre']
         release_date = data[value]['release_date']
         num_of_episodes = data[value]['num_of_episodes']
         pub_date = data[value]['pub_date']
@@ -122,9 +122,9 @@ def add_titles_in_script(data):
         status = data[value]['status']
         extent = '5'
         cursor.execute("""INSERT INTO catalog_anime_title
-            (name_ru,genre, release_date, num_of_episodes, pub_date, name_eng, rating, status, extent)
-            VALUES (%s, %s, %s, %s, %s, %s,%s, %s, %s)""",
-                       (name_ru, genre, release_date, num_of_episodes, pub_date, name_eng, rating, status, extent))
+            (name_ru, release_date, num_of_episodes, pub_date, name_eng, rating, status, extent)
+            VALUES (%s, %s, %s, %s, %s,%s, %s, %s)""",
+                       (name_ru, release_date, num_of_episodes, pub_date, name_eng, rating, status, extent))
     conn.commit()
     cursor.close()
     conn.close()

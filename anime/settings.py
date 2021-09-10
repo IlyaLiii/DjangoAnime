@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'captcha',
     'django.contrib.postgres',
     'precise_bbcode',
-    'bootstrap4',
+    # 'bootstrap4',
     'django_cleanup',
     'social_django',
     'rest_framework',
@@ -49,11 +49,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'anime.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'Mori_dev',
+        'NAME': 'ken',
+        'USER': 'ken',
         'PASSWORD': 'zxcqwe123',
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '5432',
     }
 }
@@ -132,6 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -156,72 +157,87 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+# captcha
+RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
+RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 
 # # EMAIL
 # EMAIL_PORT = 1025
 #
-# # CACHES
-# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-# SESSION_CACHE_ALIAS = 'session_storage'
+# CACHES
+# настроки с книги
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'session_storage'
+CACHES = {
+    'default': {
+        'BACKEND':
+            'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'localhost:11211'
+    },
+    'session_storage': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/0'
+    }
+}
+# свои траи
 # CACHES = {
-#     'default': {
-#         'BACKEND':
-#             'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': 'localhost:11211'
-#     },
-#     'session_storage': {
-#         'BACKEND': 'django_redis.cache.RedisCache',
-#         'LOCATION': 'redis://localhost:6379/0'
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient"
+#         },
+#         "KEY_PREFIX": "example"
 #     }
 # }
 
 # logs
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-    },
-    'formatters': {
-        'simple': {
-            'format': '[%(asctime)s] % (levelname)s: %(message)s',
-            'datefmt': '%Y.%m.%d %H:%M:%S',
-        }
-    },
-    'handlers': {
-        'console_dev': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-            'filters': ['require_debug_true'],
-        },
-        'console_prod': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-        },
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'd:django-site.log',
-            'maxBytes': 1048576,
-            'backupCount': 10,
-            'formatter': 'simple',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console_dev', 'console_prod'],
-        },
-        'django.server': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,
+#     'filters': {
+#         'require_debug_false': {
+#             '()': 'django.utils.log.RequireDebugFalse',
+#         },
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#     },
+#     'formatters': {
+#         'simple': {
+#             'format': '[%(asctime)s] % (levelname)s: %(message)s',
+#             'datefmt': '%Y.%m.%d %H:%M:%S',
+#         }
+#     },
+#     'handlers': {
+#         'console_dev': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple',
+#             'filters': ['require_debug_true'],
+#         },
+#         'console_prod': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple',
+#             'level': 'ERROR',
+#             'filters': ['require_debug_false'],
+#         },
+#         'file': {
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': 'd:django-site.log',
+#             'maxBytes': 1048576,
+#             'backupCount': 10,
+#             'formatter': 'simple',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console_dev', 'console_prod'],
+#         },
+#         'django.server': {
+#             'handlers': ['file'],
+#             'level': 'INFO',
+#             'propagate': True,
+#         },
+#     },
+# }

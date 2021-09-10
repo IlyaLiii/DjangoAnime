@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from django.views.decorators.cache import cache_page
 # from anime.settings import DEBUG
 # from django.contrib.staticfiles.views import serve
 # from django.views.decorators.cache import never_cache
@@ -7,7 +8,7 @@ from .views import *
 app_name = 'catalog'
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
-    path('<int:anime_id>/', detail, name='detail'),
+    path('<int:anime_id>/', cache_page(60*60)(detail), name='detail'),
     path('random_title/', random_title, name='random_title'),
     path('genre_search/', Genre_search.as_view(), name='genre_search'),
     path('title_search/', title_search, name='title_search'),
