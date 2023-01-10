@@ -11,21 +11,22 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import environ
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+a = environ.Env.read_env(os.path.join(BASE_DIR, 'env.env'))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q$lin!h#me*o*d@i8wo8xex525#9oq1l58vtib05179lc%c9&p'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = [
+    '127.0.0.1'
+]
 
 # Application definition
 
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'captcha',
     'django.contrib.postgres',
     'precise_bbcode',
-    # 'bootstrap4',
+    'bootstrap4',
     'django_cleanup',
     'social_django',
     'rest_framework',
@@ -82,22 +83,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'anime.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+PGDATABASE = env('PGDATABASE')
+PGUSER = env('PGUSER')
+PGPASSWORD = env('PGPASSWORD')
+PGHOST = env('PGHOST')
+PGPORT = env('PGPORT')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ken',
-        'USER': 'ken',
-        'PASSWORD': 'zxcqwe123',
-        'HOST': '',
-        'PORT': '5432',
+        'NAME': PGDATABASE,
+        'USER': PGUSER,
+        'PASSWORD': PGPASSWORD,
+        'HOST': PGHOST,
+        'PORT': PGPORT,
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -149,37 +150,38 @@ MEDIA_URL = '/media/'
 
 # Для social-django
 SOCIAL_AUTH_POSTGRES_JSONFIELD = True
-SOCIAL_AUTH_VK_OAUTH2_KEY = '7923394'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = 'NpoNWWcSbTl7FGs0L4j5'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_VK_OAUTH2_KEY = env('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+# TODO: Сделать так, чтобы нельзя было менять пароль, если ты авторизировался через ВК, мб добавить пермишены, хз
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 # captcha
-RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
-RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
+RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
 
 # # EMAIL
 # EMAIL_PORT = 1025
 #
 # CACHES
-# настроки с книги
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'session_storage'
-CACHES = {
-    'default': {
-        'BACKEND':
-            'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'localhost:11211'
-    },
-    'session_storage': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/0'
-    }
-}
-# свои траи
+#
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# SESSION_CACHE_ALIAS = 'session_storage'
+# CACHES = {
+#     'default': {
+#         'BACKEND':
+#             'django.core.cache.backends.memcached.MemcachedCache',
+#         'LOCATION': 'localhost:11211'
+#     },
+#     'session_storage': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://localhost:6379/0'
+#     }
+# }
+#
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",

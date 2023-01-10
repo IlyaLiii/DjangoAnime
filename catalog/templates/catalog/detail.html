@@ -14,7 +14,25 @@
 <p>Выполните вход, так будет больше контента для вас :)</p>
 {% endif %}
 {% if data %}
-    <h2>{{ data.name_ru }} / {{ data.name_eng }} <i>{{ data.rating }}</i></h2>
+    <h2>
+        {% if data.name_ru %}
+        {{ data.name_ru }}
+        {% else %}
+        Названия на русском нет
+        {% endif %}
+
+        {% if data.name_eng %}
+        /
+        {{ data.name_eng }}
+        {% endif %}
+
+        {% if data.rating %}
+        <i>{{ data.rating }}</i>
+        {% else %}
+        <i>Оценка не выставлена!</i>
+        {% endif %}
+
+    </h2>
     <p>Дата релиза: {{ data.release_date }}</p>
     <p>Статус: <b>{{ data.status }}</b></p>
     <p>Жанры:

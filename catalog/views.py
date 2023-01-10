@@ -52,6 +52,7 @@ class Genre_search(ListView):
 
 
 # Переопределение функции в класс, чтобы было круче
+# TODO: пофиксить html. в этой функции нет валидации данных, так что при отсутствии данных на страницу выкидывает None, добавиить тэги валидации
 @require_http_methods(['GET'])
 def detail(request, anime_id):
     # print(request.GET)
@@ -112,6 +113,7 @@ def random_title(request):
     return redirect('/catalog/' + str(title), {'data': context})
 
 
+# Todo: Добавить корректные декораторы к этой функции, изменить форму, а то она некрасивая) и по возможности через bootstrap. Пофиксиить формы, есть форма Anime_title_form_for_user, а есть AddAnime_title (понять какая лучше и чо зачем и почему)
 class Anime_t_create_view(CreateView):
     template_name = 'catalog/create.html'
     form_class = Anime_title_form_for_user

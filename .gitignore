@@ -118,4 +118,4 @@ GitHub.sublime-settings
 !.vscode/extensions.json
 .history
 
-./anime/secret_settings.py
+env.env

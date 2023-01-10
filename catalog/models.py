@@ -13,7 +13,7 @@ from os.path import splitext
 #
 # file = models.FileField(upload_to=get_timestamp_path())
 
-
+#TODO: Разобраться с IDшниками, как говорил Мишаня, что-то типа вместо id другое поле, более надежное
 class PGSRubric(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()

@@ -42,6 +42,7 @@ urlpatterns = [
         template_name='registration/reset_password.html',
         subject_template_name='registration/reset_subject.txt',
         email_template_name='registration/reset_email.txt',
+        # TODO: Понять что за success_url и прикрутить его
         # success_url=reverse_lazy('accounts/password_reset/done/'),
     ), name='password_reset'),
     path('accounts/password_reset/done/', PasswordResetDoneView.as_view(
@@ -54,6 +55,7 @@ urlpatterns = [
         template_name='registration/password_confirmed.html'
     ), name='password_reset_complete'),
     path('social/', include('social_django.urls', namespace=' ')),
+
     # api_restframework
     path('api/genres/<int:pk>/', api_genres_detail),
     path('api/genres/', api_genres),
