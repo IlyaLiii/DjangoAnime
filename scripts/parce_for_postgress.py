@@ -12,7 +12,7 @@ headers = {
     'accept': '*/*'
 }
 
-
+# TODO: Убрать badcode с парсинга)
 class Parce:
     def __init__(self, url, headers):
         self.url = url
@@ -54,7 +54,10 @@ class Parce:
                     try:
                         rating = soup.find('div', class_='score-value score-7').get_text()
                     except(AttributeError):
-                        rating = soup.find('div', class_='score-value score-6').get_text()
+                        try:
+                            rating = soup.find('div', class_='score-value score-6').get_text()
+                        except(AttributeError):
+                            rating = soup.find('div', class_='score-value score-5').get_text()
             genres = soup.find_all('span', class_='genre-ru')
             genres_list = []
             for genre in genres:
@@ -107,9 +110,9 @@ Parce = Parce(url, headers)
 data = Parce.parce()
 print(data)
 
-
+#TODO: Разкомментить жанры и добавить добавления жанров в таблицу Genre
 def add_titles_in_script(data):
-    conn = psycopg2.connect(host="", database="ken", user="ken", password="zxcqwe123")
+    conn = psycopg2.connect(host="", database="Mori", user="Mori", password="zxcqwe123")
     cursor = conn.cursor()
     for value in data:
         name_ru = data[value]['name_ru']

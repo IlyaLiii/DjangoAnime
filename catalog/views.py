@@ -29,7 +29,7 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five published questions."""
         return Anime_title.objects.order_by('-pub_date')[:10]
-    # TODO: это метод должен по идее возвращать в 'current_title' аниме по айди, но как я понял это метож для функции detail
+    # TODO: это метод должен по идее возвращать в 'current_title' аниме по айди, но как я понял это метод для функции detail
     # def get_context_data(self, *, object_list=None, **kwargs):
     #     print(**kwargs)
     #     context = super().get_context_data(**kwargs)
@@ -52,7 +52,6 @@ class Genre_search(ListView):
 
 
 # Переопределение функции в класс, чтобы было круче
-# TODO: пофиксить html. в этой функции нет валидации данных, так что при отсутствии данных на страницу выкидывает None, добавиить тэги валидации
 @require_http_methods(['GET'])
 def detail(request, anime_id):
     # print(request.GET)

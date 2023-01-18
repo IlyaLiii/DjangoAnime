@@ -8,47 +8,65 @@
     href="{% static 'catalog/style.css' %}">
 </head>
 <body>
-{% if user.is_authenticated %}
-<p>Вы уже выполнили вход, <b style="color: red">{{user.username}}</b></p>
-{% else %}
-<p>Выполните вход, так будет больше контента для вас :)</p>
-{% endif %}
-{% if data %}
-    <h2>
-        {% if data.name_ru %}
-        {{ data.name_ru }}
+    {% if user.is_authenticated %}
+        <p>Вы уже выполнили вход, <b style="color: red">{{user.username}}</b></p>
+    {% else %}
+        <p>Выполните вход, так будет больше контента для вас :)</p>
+    {% endif %}
+
+    {% if data %}
+        <h2>
+            {% if data.name_ru %}
+                {{ data.name_ru }}
+            {% else %}
+                Названия на русском нет
+            {% endif %}
+
+            {% if data.name_eng %}
+                /{{ data.name_eng }}
+            {% endif %}
+
+            {% if data.rating %}
+                <i>{{ data.rating }}</i>
+            {% else %}
+                <i>Оценка не выставлена!</i>
+            {% endif %}
+        </h2>
+
+        {% if data.release_date %}
+            <p>Дата релиза: {{ data.release_date }}</p>
         {% else %}
-        Названия на русском нет
+            <p>Даты релиза нет</p>
         {% endif %}
 
-        {% if data.name_eng %}
-        /
-        {{ data.name_eng }}
-        {% endif %}
-
-        {% if data.rating %}
-        <i>{{ data.rating }}</i>
+        {% if data.status %}
+            <p>Статус: <b>{{ data.status }}</b></p>
         {% else %}
-        <i>Оценка не выставлена!</i>
+            <p>Статус не выставлен</p>
         {% endif %}
 
-    </h2>
-    <p>Дата релиза: {{ data.release_date }}</p>
-    <p>Статус: <b>{{ data.status }}</b></p>
-    <p>Жанры:
-     {% if data.genre.all %}
-        {% for genre in data.genre.all %}
-        {{ genre }}
-        {% endfor %}
-     {% else %}
-        жанры не выставлены(
-     {% endif %}
-    </p>
-    <p>Кол-во эпизодов: {{ data.num_of_episodes }}</p>
-    <p>Дата добавления на сайт: {{ data.pub_date }}</p>
-{% else %}
-    <p>Title does not exists</p>
-{% endif %}
+        <p>Жанры:
+         {% if data.genre.all %}
+            {% for genre in data.genre.all %}
+            {{ genre }}
+            {% endfor %}
+         {% else %}
+             не выставлены(
+         {% endif %}
+        </p>
+
+        {% if data.num_of_episodes %}
+            <p>Кол-во эпизодов: {{ data.num_of_episodes }}</p>
+        {% else %}
+            <p>Кол-во эпизодов не выставлено</p>
+        {% endif %}
+        {% if data.pub_date %}
+            <p>Дата добавления на сайт: {{ data.pub_date }}</p>
+        {% endif %}
+
+    {% else %}
+        <p>Title does not exists</p>
+    {% endif %}
 {{ current_title }}
 </body>
 </html>

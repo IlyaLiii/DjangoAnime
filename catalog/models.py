@@ -59,6 +59,7 @@ class Anime_title(models.Model):
     name_eng = CICharField(max_length=250, verbose_name='Имя на английском')
     rating = CICharField(max_length=50, null=True, verbose_name='Рейтинг')
     # genre = ArrayField(base_field=models.CharField(max_length=250, null=True), verbose_name='Жанры')
+    # TODO: Пофиксить баг, иногда вылетает статус на английском, а иногда на русском - разобраться в чем причина и устранить
     status = CICharField(max_length=50, choices=Status_of_title, verbose_name='Статус')
     release_date = CICharField(max_length=50, null=True, verbose_name='Дата выхода')
     num_of_episodes = CICharField(max_length=50, null=True, verbose_name='Кол-во эпизодов')
