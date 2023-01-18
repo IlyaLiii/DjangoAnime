@@ -1,4 +1,5 @@
-from django.http import HttpResponse, Http404, HttpResponseRedirect, StreamingHttpResponse, FileResponse, JsonResponse
+from django.http import HttpResponse, Http404, HttpResponseRedirect, \
+    StreamingHttpResponse, FileResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from django.views.generic.list import ListView
@@ -8,11 +9,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Anime_title, Genres, Img
+from catalog.models import Anime_title, Genres, Img
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user, SearchForm, AddAnime_title, ImgForm
+from .forms import Anime_title_form_for_user, SearchForm, Add_Anime_title, ImgForm
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
@@ -112,7 +113,7 @@ def random_title(request):
     return redirect('/catalog/' + str(title), {'data': context})
 
 
-# Todo: Добавить корректные декораторы к этой функции, изменить форму, а то она некрасивая) и по возможности через bootstrap. Пофиксиить формы, есть форма Anime_title_form_for_user, а есть AddAnime_title (понять какая лучше и чо зачем и почему)
+# Todo: Добавить корректные декораторы к этой функции, изменить форму, а то она некрасивая) и по возможности через bootstrap. Пофиксиить формы, есть форма Anime_title_form_for_user, а есть Add_Anime_title (понять какая лучше и чо зачем и почему)
 class Anime_t_create_view(CreateView):
     template_name = 'catalog/create.html'
     form_class = Anime_title_form_for_user
@@ -127,7 +128,7 @@ class Anime_t_create_view(CreateView):
 # TODO: Аналог нормальной формы, нужно потесить
 def Anime_t_create(request):
     if request.method == 'POST':
-        anime_form = AddAnime_title(request.POST)
+        anime_form = Add_Anime_title(request.POST)
         if anime_form.is_valid():
             anime_form.save()
             return HttpResponseRedirect(reverse('catalog:index'))
@@ -135,7 +136,7 @@ def Anime_t_create(request):
             context = {'form': anime_form}
             return render(request, 'catalog/create.html', context)
     else:
-        anime_form = AddAnime_title()
+        anime_form = Add_Anime_title()
         context = {'form': anime_form}
         return render(request, 'catalog/create.html', context)
 

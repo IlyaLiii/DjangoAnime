@@ -160,14 +160,18 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# TODO: Починить рекапчу
+# Данная каптча для теста, при деплое обязательно сделать перевести ключи на продакшен
 # captcha
-# RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
-# RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_PUBLIC_KEY = env('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env('RECAPTCHA_PRIVATE_KEY')
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 
+# TODO: Прикрутить emal-рассылку
 # # EMAIL
 # EMAIL_PORT = 1025
 #
+# TODO: Прикрутить кэш через redis
 # CACHES
 #
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
@@ -196,7 +200,7 @@ AUTHENTICATION_BACKENDS = (
 # }
 
 # logs
-
+# TODO: Прикрутить логгирование
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': True,

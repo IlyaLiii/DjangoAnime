@@ -3,7 +3,8 @@ from django.core import validators
 from django.forms import ModelForm, Select, forms, DecimalField, ModelChoiceField, CharField, NumberInput, IntegerField, \
     SlugField, ModelMultipleChoiceField, ImageField, widgets
 from .models import Anime_title, Genres, Img
-from captcha.fields import CaptchaField
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 
 
 class Anime_title_form_for_user(ModelForm):
@@ -14,16 +15,22 @@ class Anime_title_form_for_user(ModelForm):
         help_texts = {'name_ru': ' - Укажи имя тайтла'}
         # widgets = {'name_ru': Select(attrs={'size': 100, 'color': 'yellow'})}
 
-
-class AddAnime_title(ModelForm):
+# несрочное TODO: Сделать красивую форму, а то жанры через CTRL жать - такое себе
+class Add_Anime_title(ModelForm):
     name_ru = CharField(label='Имя на русском', max_length=250)
     rating = IntegerField(label='Рейтинг', min_value=1, max_value=10)
     genres = ModelMultipleChoiceField(queryset=Genres.objects.all(),
                                       label='Жанры',
-                                      help_text='Укажите жанры',
+                                      help_text='Укажите жанры через CTRL',
                                       required=False)
-    captcha = CaptchaField(label='Введите текст с картинки:',
-                           error_messages={'invalid': 'Неправильный текст'})
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Checkbox(
+            attrs={
+                'data-theme': 'dark',
+                # 'data-size': 'compact',
+            }
+        )
+    )
 
     class Meta:
         model = Anime_title

@@ -26,7 +26,7 @@ urlpatterns = [
     # path('profile/', include('restapp.urls')),
     path('catalog/', include('catalog.urls')),
     path('admin/', admin.site.urls),
-    path('captcha/', include('captcha.urls')),
+    # path('captcha/', include('captcha.urls')),
     # path 'accounts/.....
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
