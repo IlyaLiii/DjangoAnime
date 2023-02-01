@@ -23,7 +23,7 @@ class PGSRubric(models.Model):
 
 
 class Genres(models.Model):
-    genre = CICharField(max_length=50)
+    genre = CICharField(max_length=50, unique=True)
 
     class Meta:
         verbose_name_plural = 'Жанры'
