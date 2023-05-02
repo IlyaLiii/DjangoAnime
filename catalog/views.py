@@ -13,7 +13,7 @@ from catalog.models import Anime_title, Genres, Img
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
-from .forms import Anime_title_form_for_user, SearchForm, Add_Anime_title, ImgForm
+from .forms import Anime_title_form_for_user, SearchForm, Add_Anime_title, ImgForm, XmlForm
 from django.urls import reverse_lazy, resolve
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
@@ -170,7 +170,19 @@ def add_img(request):
         form = ImgForm()
         context = {'form': form}
         return render(request, 'catalog/add_img.html', context)
-
+def upload_xml(request):
+    if request.method == 'POST':
+        form = XmlForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('catalog:index')
+        else:
+            context = {'form': form}
+            return render(request, 'catalog/upload_xml.html', context)
+    else:
+        form = XmlForm()
+        context = {'form': form}
+        return render(request, 'catalog/upload_xml.html', context)
 
 # api_restwramework
 

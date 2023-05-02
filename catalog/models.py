@@ -13,7 +13,7 @@ from os.path import splitext
 #
 # file = models.FileField(upload_to=get_timestamp_path())
 
-#TODO: Разобраться с IDшниками, как говорил Мишаня, что-то типа вместо id другое поле, более надежное
+# TODO: Разобраться с IDшниками, как говорил Мишаня, что-то типа вместо id другое поле, более надежное
 class PGSRubric(models.Model):
     name = models.CharField(max_length=20)
     description = models.TextField()
@@ -108,3 +108,15 @@ class Img(models.Model):
 class Profile(models.Model):
     phone = CICharField(max_length=20, null=True, verbose_name='Номер телефона')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+class Xml_Files(models.Model):
+    file = models.FileField(upload_to='xml-files/%Y/%m/%d/')
+
+    class Meta:
+        verbose_name = 'XML'
+        verbose_name_plural = 'XMLs'
+
+    def delete(self, *args, **kwargs):
+        self.file.delete(save=False)
+        super().delete(*args, **kwargs)

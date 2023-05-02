@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.core import validators
 from django.forms import ModelForm, Select, forms, DecimalField, ModelChoiceField, CharField, NumberInput, IntegerField, \
-    SlugField, ModelMultipleChoiceField, ImageField, widgets
-from .models import Anime_title, Genres, Img
+    SlugField, ModelMultipleChoiceField, ImageField, widgets, FileField
+from .models import Anime_title, Genres, Img, Xml_Files
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 
@@ -14,6 +14,7 @@ class Anime_title_form_for_user(ModelForm):
         labels = {'name_ru': 'Имя тайтла'}
         help_texts = {'name_ru': ' - Укажи имя тайтла'}
         # widgets = {'name_ru': Select(attrs={'size': 100, 'color': 'yellow'})}
+
 
 # несрочное TODO: Сделать красивую форму, а то жанры через CTRL жать - такое себе
 class Add_Anime_title(ModelForm):
@@ -50,6 +51,22 @@ class SearchForm(forms.Form):
     keyword = CharField(max_length=30, label='Искомое слово')
     # genres = ModelChoiceField(queryset=Genres.objects.all(),
     #                           label='Жанры')
+
+
+class XmlForm(ModelForm):
+    # xml = FileField(validators=[validators.FileExtensionValidator(
+    #     allowed_extensions=('xml', 'xhtml'))],
+    #     error_messages={
+    #         'invalid': 'Ошибка сервера',
+    #         'invalid_extension': 'Этот формат не поддерживается',
+    #         'missing': 'Файл не заружен по какой-то причине',
+    #         'invalid_image': 'Файл поврежден',
+    #         'empty': 'Загружен пустой файл'
+    #     })
+
+    class Meta:
+        model = Xml_Files
+        fields = ('file',)
 
 
 class ImgForm(ModelForm):

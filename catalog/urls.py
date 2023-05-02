@@ -21,6 +21,7 @@ urlpatterns = [
     # path('<int:anime_id>/', Anime_title_detailView.as_view(), name='detail'),
     path('add/', Anime_t_create, name='add'),
     path('add_img/', add_img, name='add_img'),
+    path('upload_xml/', upload_xml, name='upload_xml'),
 ]
 # if DEBUG:
 #     urlpatterns.append(path('static/<path:path>', never_cache(serve)))
